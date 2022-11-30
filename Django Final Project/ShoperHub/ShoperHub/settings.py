@@ -89,7 +89,7 @@ DATABASES = {
         'NAME': 'ShopApp',
         'HOST':'localhost',
         'USER':'root',
-        'PASSWORD':'Yogesh@1996'
+        'PASSWORD':'*********'
     }
 }
 
