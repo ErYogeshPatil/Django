@@ -1,0 +1,138 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>emp_Dashboard</title>
+
+    <!-- bootstrap link -->
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+    <!-- text animation -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <!-- Google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alkalami&family=Inter:wght@500&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+    <div>
+        <div class=" col-md-5 mt-5 offset-md-4">
+            <h3><span class="text-danger">Employee Product Database Panel</span>
+                &nbsp;&nbsp;&nbsp
+                <!--use for space-->
+                <span><a href="logout"><button class="btn btn-danger text-white">Logout</button></a></span>
+            </h3>
+            <h4>Enter the Product Details </h4>
+            <hr>
+            <form method="POST" action="">
+                {% csrf_token %}
+
+                <div class="mb-3">
+                    <label for="pname" class="form-label">Product Name</label>
+                    <input type="text" class="form-control" id="pname" name="pname" placeholder="Product Name">
+                </div>
+
+                <div class="mb-3">
+                    <label for="pdesc" class="form-label">Product Description</label>
+                    <textarea class="form-control" id="pdesc" name="pdesc" rows="3"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label for="dprice" class="form-label">Product Discount Price</label>
+                    <input type="number" class="form-control" id="dprice" name="dprice" placeholder="Product Discount Price">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="aprice" class="form-label">Product Actual Price</label>
+                    <input type="text" class="form-control" id="aprice" name="aprice" placeholder="Product Actual Price">
+                </div>
+                
+                <div class="mb-3">
+                    <select class="form-select" name="ptype" aria-label="Default select example">
+                        <option selected>Type of product</option>
+                        <option value="M">Mobile</option>
+                        <option value="F">Fasion</option>
+                        <option value="k">Kitchen</option>
+                    </select>
+                </div>
+                
+                <div class="mb-3">
+                    <label for="poffer" class="form-label">offer</label>
+                    <input type="text" class="form-control" id="poffer" name="poffer" placeholder="offer">
+                </div>
+                
+                <div class="mb-3">
+                    <label for="pimage" class="form-label">Images link</label>
+                    <input type="text" class="form-control" id="pimage" name="pimage" placeholder="Imagelink">
+                </div>
+                
+                <div class="mb-3">
+                    <button class="btn btn-primary" type="submit">Add Product</button>
+                </div>
+            </form>
+        </div>
+
+
+        <div class="col-md-12 mt-5 ">
+            <h4>Product details</h4>
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Product Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Discount Price (₹)</th>
+                        <th scope="col">Actual Price (₹)</th>
+                        <th scope="col">Category</th>
+                        <th scope="col">offer</th>
+                        <th scope="col">is_Delete</th>
+                        <th scope="col">is_Cart</th>
+                        <th scope="col">images link</th>
+                        <th scope="col">Edit</th>
+                        <th scope="col">Delete</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for x in data %}
+                    <tr>
+                        <!-- use class variable name -->
+                        <td>{{x.Name}}</td>
+                        <td>{{x.P_desc}}</td>
+                        <td>{{x.Discount_Price}}</td>
+                        <td>{{x.Actual_Price}}</td>
+                        <!-- <td>{{x.cat}}</td> -->
+                        {% if x.Type == 'M' %}
+                        <td>Mobile</td>
+                        {% elif x.Type == 'F' %}
+                        <td>Fasion</td>
+                        {% else %}
+                        <td>Kitchen</td>
+                        {% endif %}
+                        <td>{{x.offer}}</td>
+                        <td>{{x.is_deleted}}</td>
+                        <td>{{x.is_Cart}}</td>
+                        <td>{{x.images_links}}</td>
+                        <td><a href="edit/{{x.id}}"><button class="btn btn-primary">Edit</button></a></td>
+                        <td><a href="delete/{{x.id}}"><button class="btn btn-warning">Delete</button></a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+    <script src="{% static 'js/main.js'%}"></script>
+    <script src="{% static 'js/bootstrap.min.js'%}"></script>
+</body>
+
+</html>

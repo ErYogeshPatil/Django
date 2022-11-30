@@ -1,0 +1,177 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShoperHub</title>
+
+    <!-- bootstrap link -->
+    <link rel="stylesheet" href="{% static 'css/style.css'%}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+
+    <!-- text animation -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+
+    <!-- Google font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alkalami&family=Inter:wght@500&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+    <!-- Nav Bar -->
+    {% csrf_token %}
+    <nav class="navbar bg-light" style="background-color: #e3f2fd;position:fixed; width:1230px;z-index:1;border-bottom:2px solid black;box-shadow:10px 10px 15px burlywood;">
+        <div class="container-fluid">
+            <a class="navbar-brand"><img src="../static/images/logo2.PNG" alt="Comapany Logo"
+                    style="width:120px; height:50px;"></a>
+            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio" autocomplete="on" checked>
+                <label class="btn btn-outline-primary" for="btnradio"><a href="/all">All</a></label>
+                
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="on">
+                <label class="btn btn-outline-primary" for="btnradio1"> <a href="/filter/Mob">Mobiles</a></label>
+
+                <input   type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="on">
+                <label class="btn btn-outline-primary" for="btnradio2"><a href="/filter/Fas">Fashion</a></label>
+
+                <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="on">
+                <label class="btn btn-outline-primary" for="btnradio3"><a href="/filter/kit">Kichen</a></label>
+            </div>
+            <form class="d-flex" role="search" method="POST" action="SearchByName">
+                {% csrf_token %}
+                <input class="form-control me-2" type="search" placeholder="Search Product" aria-label="Search" name="SearchByName" id="SearchName">
+                <button class="btn btn-outline-success" type="submit" name="send" value="Find" onclick="Get()">Search</button>
+            </form>
+        </div>
+    </nav>
+
+    <script>
+        function Get() {
+            var n = (document.getElementById("Product").value);
+            if (n >= 0) {
+                alert("Enter valid Product Name")
+            }
+        }
+    </script>
+
+    <div>
+
+        <!-- main content -->
+        <div style="display:inline;padding-top:55px;">
+            <!-- left content -->
+            <div style="float:left;position:fixed;width:200px;padding-top:100px; padding-left:50px;height:auto;">
+
+                <div style="text-align:center;">
+                <h6 style="text-align:center">Sort by Name</h6>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-primary"><a href="/sort/AS"> Assending</a></button>
+                    <button type="button" class="btn btn-outline-primary"><a href="/sort/DE">Decending</a></button>
+                </div>
+                </div>
+                <hr>
+
+                <div style="text-align:center;">
+                <h6 style="text-align:center">Sort By Price</h6>
+                <div class="btn-group" role="group">
+                    <button type="button" class="btn btn-outline-primary"><a href="/PriceSort/HI">High</a></button>
+                    <button type="button" class="btn btn-outline-primary"><a href="/PriceSort/LW">Low</a></button>
+                </div>
+                </div>
+                <hr>
+
+
+                <div style="color:black; text-align:center;float:left;">
+                    <h6>Filter Between Price Range </h6>
+                    <hr>
+                    <form method="POST" action="PriceRange">
+                        <!-- action create new URL path -->
+                        {% csrf_token %}
+                        <table>
+                            <tr>
+                                <td>From Rs:</td>
+                                <td><input type="number" name="from" class="form-control" required></td>
+                            </tr>
+                            <tr>
+                                <td>To Rs:</td>
+                                <td><input type="number" name="to" class="form-control" required></td>
+                            </tr>
+                            <tr>
+                                <td><input type="submit" name="send" value="Find" class="btn btn-success"></td>
+                            </tr>
+                        </table>
+                    </form>
+                    <hr>
+                </div>
+
+                <a href="/Total" name="Total">Total is</a>-->{{Total}}
+            </div>
+
+            <!-- center content -->
+            <div style="float:left;width:950px;padding-left:250px;padding-top:100px;">
+                <div style="text-align:center;justify-content:center;padding-left:140px;">
+                    
+                    {% for x in data %}
+                    <div class="card" style="width:450px;border-radius:20px;box-shadow:0px 0px 40px burlywood;">
+                        <img src="{{x.Image}}" class="card-img-top" alt="" style="padding:10px 30px;">
+                        <div class="card-body">
+                            <h5 class="card-title">{{x.Name}}</h5>
+                            <table style="text-align:center;">
+                                <tr>
+                                    <td style="color:red;"> Price: ₹ {{x.Discount_Price}} <sub style="font-size:12px;"><strike>₹{{x.Actual_Price}}</strike></sub></td>
+                                    <td class="text-muted" style="font-size:13px;">({{x.Offer}}% OFF)</td>
+                                    <td  style="color: green;">_Free Delivery_<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-truck" viewBox="0 0 16 16">
+                                        <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h9A1.5 1.5 0 0 1 12 3.5V5h1.02a1.5 1.5 0 0 1 1.17.563l1.481 1.85a1.5 1.5 0 0 1 .329.938V10.5a1.5 1.5 0 0 1-1.5 1.5H14a2 2 0 1 1-4 0H5a2 2 0 1 1-3.998-.085A1.5 1.5 0 0 1 0 10.5v-7zm1.294 7.456A1.999 1.999 0 0 1 4.732 11h5.536a2.01 2.01 0 0 1 .732-.732V3.5a.5.5 0 0 0-.5-.5h-9a.5.5 0 0 0-.5.5v7a.5.5 0 0 0 .294.456zM12 10a2 2 0 0 1 1.732 1h.768a.5.5 0 0 0 .5-.5V8.35a.5.5 0 0 0-.11-.312l-1.48-1.85A.5.5 0 0 0 13.02 6H12v4zm-9 1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm9 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+                                      </svg>_</td>
+                                </tr>
+                            </table><hr>
+                            <p class="card-text">{{x.P_desc}}</p>
+                            <a href="addtocart/{{x.id}}" class="btn btn-primary">Add To Cart</a>
+                        </div>
+                        <hr>
+                    </div>
+                    {% endfor %}
+
+                   
+                </div>
+
+            </div>
+            <!-- right content -->
+            <div style="position:fixed;padding-top:100px;padding-left:1000px;padding-right:50px;z-index:-1;">
+                <div style="width:200px;text-align: center;">
+                    <h4>Welcome in ShoperHub !</h4><br>
+                    <img src="../static/images/profile_pic.jpg" alt="image" style="height:100px; width:100px;"><br>
+                    <h4>Welcome User!</h4><br>
+                    <button type="button" class="btn btn-primary"><a href="http://127.0.0.1:8000/Viewcart"
+                            style="color:rgb(255, 255, 255);">view cart</a></button>
+                    <button type="button" class="btn btn-primary"><a href="http://127.0.0.1:8000/Login"
+                            style="color:rgb(255, 255, 255);">Logout</a></button>
+                    <hr>
+                </div><br>
+
+                <div style="width:200px;text-align:left;">
+                    <marquee loop="" direction="up">
+                        <p>50% OFF on Top Mobiles Brands</p>
+                        <p>Assured Descount vouture</p>
+                        <p>20% of on Brand Furniture </p>
+                        <p>20% of on Fasion Accessorys</p>
+                    </marquee>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- Java script boot strap link -->
+    <script src="{% static 'js/main.js'%}"></script>
+    <script src="{% static 'js/bootstrap.min.js'%}"></script>
+</body>
+
+</html>

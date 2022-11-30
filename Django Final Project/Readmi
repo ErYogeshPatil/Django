@@ -1,0 +1,77 @@
+steps to be follow --------------------
+
+Console comand
+
+1.open Vs code
+2.Terminal- pip install vertualenv (env)
+3.open vn- .\env.\Scripts\activate
+4.pip install (Django , mysqlclient)
+5.pip freeze (check package)
+6.django-admin startproject [ProjectName]
+7.cd [ProjectName]
+8.python manage.py startproject [Appname]
+9.python manage.py runserver
+
+[project] modifications
+
+setings.py ---------
+1.add your application in Install app section INSTALLED_APPS = [
+2.link Templet file in TEMPLATES=[ 'DIRS': [os.path.join(BASE_DIR,'templates')],   
+3.change database setting --
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ShoperHub',
+        'HOST':'localhost',
+        'USER':'root',
+        'PASSWORD':'Yogesh@1996'
+        }
+    }
+4.STATIC_URL = 'static/'  section add ststic folder path
+    STATICFILES_DIRS=[
+    os.path.join(BASE_DIR,'static')
+    ]
+
+-urls.py file---------------------
+1. add path for your Appfolder
+path('',include('ShopApp.urls')),
+
+
+create some folder -------
+
+static -> css , images , js folder (use to add bootstrap file)
+templates foolder to add hml files
+
+download bootstrap file and extract and add 
+in css and js folder - bootstrap.min.css and bootstrap.min.js and main.js file 
+
+------------------------------------------------------------
+
+Application section ------------------------------
+
+Admin.py--------------
+# display particular field on admin panel
+# syntax- admin.site.register(modelname)
+
+# define custom filter
+
+Urls.py--------------
+
+add urls as per need..in 
+urlpatterns = [...
+needs to import --
+    from django.urls import path
+    from ShopApp import views
+
+
+Views.py ------------------------
+add function to excecute url...logical part written here
+
+ex---def product(request):
+# required logic write heres
+     return render(request,'product.html')  # max 3 parameter pass in return
+
+
+model.py------------------
+
+create your database model here and link with views
